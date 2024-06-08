@@ -8,18 +8,23 @@
 #include <string>
 #include <ctime>
 #include <mutex>
-
+/**
+ * Class Note
+ * */
 class Note {
 private:
     std::string title;
     std::string content;
-    std::time_t createDate;
-    std::time_t updateDate;
+    std::time_t createDate{};
+    std::time_t updateDate{};
     bool locked{};
     std::mutex lockMutex; // Mutex for thread safety
 
 public:
-    Note(std::string  title, std::string  content);
+    Note(std::string   title, std::string   content);
+    Note(const Note& note);
+
+    Note& operator=(const Note& other);
 
     std::string getTitle() const;
     std::string getContent() const;
@@ -32,7 +37,12 @@ public:
     void lock();
     void unlock();
 
-    void print() const;
+    Note duplicate();
+
+    void printNote() const;
+
+private:
+    static std::string timeToString(std::time_t time) ;
 };
 
 
